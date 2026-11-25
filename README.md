@@ -1,7 +1,4 @@
----
-glean_provenance: {"generation_id":"b97f6b0798ee4e7187f73ecceda82b4c.1","generated_at":"2026-11-25T18:17:07Z","model":"Glean Assistant 571.123"}
----
-# ratings-poc — POC de performance MongoDB Atlas para processamento de rating em lote
+# MDB-Parquet - POC de performance MongoDB Atlas para processamento de arquivos Parquet em lote (Ingestão - Processamento - Exportação)
 
 POC que reproduz, no MongoDB Atlas, um pipeline batch de rating de crédito com ~30 milhões de contratos:
 
