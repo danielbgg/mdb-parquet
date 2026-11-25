@@ -25,3 +25,25 @@
 - **Tipos** (`results/type_mapping.md`): BSON 1:1 com o Parquet (`long`, `int`, `double`, `string`), ordem de campos
   preservada e **Parquet NULL → campo ausente** (`vr_renegociado` missing em 95%). O modelo agrupado grava
   `vr_renegociado: null` explicitamente via `$ifNull`.
+
+## Observações — etapa 03 (export)
+
+- **`background: true` + `$queryHistory` resolveu a medição.** O ADF aceita o `aggregate` em ~0,3 s e segue executando;
+  o `$queryHistory` (db `admin`) devolve `startTime`/`endTime`/`ok`/`error` de cada query. Todos os tempos da etapa 03
+  são exatos, medidos no servidor. O mesmo histórico permitiu reconciliar as cargas 01/02b (polling errava de 2 a 8 s).
+- **03b (principal): 30.076.105 linhas → 1 arquivo Parquet de 868 MB em 7,6 min (mediana de 3: 453,6 / 453,0 / 411,6 s)**,
+  43 row groups, snappy. Validação completa 3×: contagem, chaves únicas, checksums, nulos, igualdade linha a linha com a
+  entrada (0 diferenças), `rating_final` consistente, leitura com pyarrow.
+- **03a (plano, 15 colunas): 6,4 min** (406,8 / 363,1 / 386,5 s). O `$unwind` + 2 colunas do 03b custam ~15%.
+- **03b-multi (maxFileSize padrão): 54 arquivos de ~16 MB em 6,2 min** — ligeiramente mais rápido que o arquivo único,
+  porque o ADF paraleliza a escrita de vários objetos. Reproduz o problema atual do cliente (~200 arquivos): o custo de
+  ter 1 arquivo é ~1 min a mais, e `maxFileSize` é o único parâmetro que muda.
+- **Tamanho**: 03b (17 colunas) = 868 MB < 03a (15 colunas) = 1,11 GB. A saída agrupada sai ordenada por cliente, então
+  `co_cpf_cnpj` (coluna mais pesada da entrada) comprime muito melhor com valores consecutivos repetidos.
+- **Arrasto na saída**: 5.311.074 linhas (17,66%) têm `rating_final != rating_contrato`, em 2.310.901 clientes (19,20%) —
+  exatamente os clientes com ranks diferentes identificados na etapa 02.
+- **Schema**: tipos físicos/lógicos das 15 colunas idênticos aos da entrada (normalizados). Diferenças de anotação
+  (ConvertedType legado × LogicalType) e nullability (REQUIRED → OPTIONAL em 4 colunas) listadas em cada relatório;
+  não são controláveis pelos parâmetros do `$out`.
+- **03c (PyMongoArrow)** não foi executado — o script está pronto para uma EC2 (ver `03_export/README.md`); do notebook
+  o tempo mediria a rede, não o banco. Teste funcional com 1M passou na validação completa.

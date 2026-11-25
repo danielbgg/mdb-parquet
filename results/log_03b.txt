@@ -1,0 +1,197 @@
+[03_export_03b run 1/3] ratings_poc.clientes_agrupados -> s3://btg-ratings-poc-dgoncalves/output/03b/20261125T161153Z/
+  $out: {"s3": {"bucket": "btg-ratings-poc-dgoncalves", "region": "us-east-1", "filename": "output/03b/20261125T161153Z/ratings_export", "format": {"name": "parquet", "columnCompression": "snappy", "maxFileSize": "20GiB"}, "errorMode": "stop"}}
+  background aggregate accepted in 0.33s; polling $queryHistory every 2.0s
+       63s  history=not yet visible  s3: 0 obj, 0.0 MB
+      124s  history=not yet visible  s3: 0 obj, 0.0 MB
+      186s  history=not yet visible  s3: 0 obj, 0.0 MB
+      247s  history=not yet visible  s3: 0 obj, 0.0 MB
+      309s  history=not yet visible  s3: 0 obj, 0.0 MB
+      370s  history=not yet visible  s3: 0 obj, 0.0 MB
+      432s  history=not yet visible  s3: 0 obj, 0.0 MB
+[03_export_03b run 1/3] main: 453.6s (source: queryHistory; 2026-11-25T16:11:54 -> 2026-11-25T16:19:28)
+  S3: 1 file(s), 868.5 MB
+    output/03b/20261125T161153Z/ratings_export.1.parquet  868.5 MB
+[03_export_03b run 1/3] validation ...
+  $ /Users/daniel.goncalves/MongoDB/git/mdb-parquet/scripts/validate_output.py --s3-prefix s3://btg-ratings-poc-dgoncalves/output/03b/20261125T161153Z/ --manifest data/manifest.json --input data/ratings_input_synthetic.parquet --report /Users/daniel.goncalves/MongoDB/git/mdb-parquet/results/validate_output_03b_20261125T161153Z.json --grouped
+  downloading output/03b/20261125T161153Z/ratings_export.1.parquet (910.6 MB) ...
+  1 object(s) under s3://btg-ratings-poc-dgoncalves/output/03b/20261125T161153Z/ -> data/output/03b/20261125T161153Z (28.4s)
+  [PASS] no error/other files in the prefix — 1 parquet file(s)
+  [PASS] exactly 1 parquet file generated — 1 file(s)
+  [PASS] column names and order — data_referencia, chave_sequencial, co_cpf_cnpj, contrato, qt_dias_atraso, saldo, saldo_limite, ctr_elegivel, carteira, cod_produto, flag_prejuizo_2682, flag_obito, qt_dias_atraso_acumulado, modalidade, vr_renegociado, rating_contrato, rating_final
+  [PASS] no nested/polymorphic (group) columns — all leaves
+  [PASS] first 15 columns: same physical/logical type as input (normalized) — identical
+  [WARN] first 15 columns: identical annotations and nullability (repetition) — 17 difference(s): col 1 data_referencia.logical_type: input=None output='StringType()'; col 1 data_referencia.repetition_type: input='REQUIRED' output='OPTIONAL'; col 2 chave_sequencial.converted_type: input='INT_64' output=None; col 3 co_cpf_cnpj.logical_type: input=None output='StringType()'; col 3 co_cpf_cnpj.repetition_type: input='REQUIRED' output='OPTIONAL'; col 4 contrato.converted_type: input='INT_64' output=None; col 5 qt_dias_atraso.converted_type: input='INT_32' output=None; col 8 ctr_elegivel.logical_type: input=None output='StringType()'; col 8 ctr_elegivel.repetition_type: input='REQUIRED' output='OPTIONAL'; col 9 carteira.logical_type: input=None output='StringType()'; col 10 cod_produto.converted_type: input='INT_32' output=None; col 11 flag_prejuizo_2682.converted_type: input='INT_32' output=None; col 12 flag_obito.converted_type: input='INT_32' output=None; col 12 flag_obito.repetition_type: input='REQUIRED' output='OPTIONAL'; col 13 qt_dias_atraso_acumulado.converted_type: input='INT_32' output=None; col 14 modalidade.converted_type: input='INT_32' output=None; col 15 vr_renegociado.logical_type: input=None output='StringType()'
+
+| # | coluna | entrada: físico / converted / logical / repetition | saída: físico / converted / logical / repetition | tipo | anotação/nullability |
+|---|---|---|---|---|---|
+| 1 | `data_referencia` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 2 | `chave_sequencial` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |
+| 3 | `co_cpf_cnpj` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 4 | `contrato` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |
+| 5 | `qt_dias_atraso` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 6 | `saldo` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |
+| 7 | `saldo_limite` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |
+| 8 | `ctr_elegivel` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 9 | `carteira` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 10 | `cod_produto` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 11 | `flag_prejuizo_2682` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 12 | `flag_obito` | INT32 / INT_32 / None / REQUIRED | INT32 / None / None / OPTIONAL | igual | difere |
+| 13 | `qt_dias_atraso_acumulado` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 14 | `modalidade` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 15 | `vr_renegociado` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 16 | `rating_contrato` | (não existe na entrada) | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | — | — |
+| 17 | `rating_final` | (não existe na entrada) | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | — | — |
+
+  metadata: 43 row groups (max 715,713 rows), compression=SNAPPY, 910.6 MB compressed / 1,444.4 MB raw; file size 0.911 GB
+  [PASS] compression is snappy — SNAPPY
+  [PASS] count == manifest.rows — 30,076,105 vs 30,076,105
+  [PASS] chave_sequencial unique and covering 1..N — min=1 max=30076105 distinct=30,076,105
+  [PASS] contrato unique — distinct=30,076,105
+  [PASS] sum(saldo) == manifest — 140014373887.45 vs 140014373887.45
+  [PASS] sum(saldo_limite) == manifest — 43255948972.24 vs 43255948972.24
+  [PASS] vr_renegociado null count == input — 28,571,205 vs 28,571,205
+  [PASS] nulls only in vr_renegociado — ok
+Traceback (most recent call last):
+  File "/Users/daniel.goncalves/MongoDB/git/mdb-parquet/scripts/validate_output.py", line 336, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/Users/daniel.goncalves/MongoDB/git/mdb-parquet/scripts/validate_output.py", line 265, in main
+    missing = con.execute(f"SELECT count(*) FROM (SELECT {cols} FROM {inp} EXCEPT ALL SELECT {cols} FROM {out})").fetchone()[0]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_duckdb.OutOfMemoryException: Out of Memory Error: failed to allocate data of size 16.0 MiB (7.4 GiB/7.4 GiB used)
+
+Possible solutions:
+* Reducing the number of threads (SET threads=X)
+* Disabling insertion-order preservation (SET preserve_insertion_order=false)
+* Increasing the memory limit (SET memory_limit='...GB')
+
+See also https://duckdb.org/docs/current/guides/performance/how_to_tune_workloads
+[03_export_03b run 1/3] validation: 37.3s
+[03_export_03b run 1/3] saved results/03_export_03b_run1_20261125T162007Z.json (+ summary.csv)
+[03_export_03b run 2/3] ratings_poc.clientes_agrupados -> s3://btg-ratings-poc-dgoncalves/output/03b/20261125T162007Z/
+  $out: {"s3": {"bucket": "btg-ratings-poc-dgoncalves", "region": "us-east-1", "filename": "output/03b/20261125T162007Z/ratings_export", "format": {"name": "parquet", "columnCompression": "snappy", "maxFileSize": "20GiB"}, "errorMode": "stop"}}
+  background aggregate accepted in 0.32s; polling $queryHistory every 2.0s
+       62s  history=not yet visible  s3: 0 obj, 0.0 MB
+      124s  history=not yet visible  s3: 0 obj, 0.0 MB
+      185s  history=not yet visible  s3: 0 obj, 0.0 MB
+      246s  history=not yet visible  s3: 0 obj, 0.0 MB
+      308s  history=not yet visible  s3: 0 obj, 0.0 MB
+      370s  history=not yet visible  s3: 0 obj, 0.0 MB
+      431s  history=not yet visible  s3: 0 obj, 0.0 MB
+[03_export_03b run 2/3] main: 453.0s (source: queryHistory; 2026-11-25T16:20:07 -> 2026-11-25T16:27:40)
+  S3: 1 file(s), 868.4 MB
+    output/03b/20261125T162007Z/ratings_export.1.parquet  868.4 MB
+[03_export_03b run 2/3] validation ...
+  $ /Users/daniel.goncalves/MongoDB/git/mdb-parquet/scripts/validate_output.py --s3-prefix s3://btg-ratings-poc-dgoncalves/output/03b/20261125T162007Z/ --manifest data/manifest.json --input data/ratings_input_synthetic.parquet --report /Users/daniel.goncalves/MongoDB/git/mdb-parquet/results/validate_output_03b_20261125T162007Z.json --grouped
+  downloading output/03b/20261125T162007Z/ratings_export.1.parquet (910.6 MB) ...
+  1 object(s) under s3://btg-ratings-poc-dgoncalves/output/03b/20261125T162007Z/ -> data/output/03b/20261125T162007Z (29.8s)
+  [PASS] no error/other files in the prefix — 1 parquet file(s)
+  [PASS] exactly 1 parquet file generated — 1 file(s)
+  [PASS] column names and order — data_referencia, chave_sequencial, co_cpf_cnpj, contrato, qt_dias_atraso, saldo, saldo_limite, ctr_elegivel, carteira, cod_produto, flag_prejuizo_2682, flag_obito, qt_dias_atraso_acumulado, modalidade, vr_renegociado, rating_contrato, rating_final
+  [PASS] no nested/polymorphic (group) columns — all leaves
+  [PASS] first 15 columns: same physical/logical type as input (normalized) — identical
+  [WARN] first 15 columns: identical annotations and nullability (repetition) — 17 difference(s): col 1 data_referencia.logical_type: input=None output='StringType()'; col 1 data_referencia.repetition_type: input='REQUIRED' output='OPTIONAL'; col 2 chave_sequencial.converted_type: input='INT_64' output=None; col 3 co_cpf_cnpj.logical_type: input=None output='StringType()'; col 3 co_cpf_cnpj.repetition_type: input='REQUIRED' output='OPTIONAL'; col 4 contrato.converted_type: input='INT_64' output=None; col 5 qt_dias_atraso.converted_type: input='INT_32' output=None; col 8 ctr_elegivel.logical_type: input=None output='StringType()'; col 8 ctr_elegivel.repetition_type: input='REQUIRED' output='OPTIONAL'; col 9 carteira.logical_type: input=None output='StringType()'; col 10 cod_produto.converted_type: input='INT_32' output=None; col 11 flag_prejuizo_2682.converted_type: input='INT_32' output=None; col 12 flag_obito.converted_type: input='INT_32' output=None; col 12 flag_obito.repetition_type: input='REQUIRED' output='OPTIONAL'; col 13 qt_dias_atraso_acumulado.converted_type: input='INT_32' output=None; col 14 modalidade.converted_type: input='INT_32' output=None; col 15 vr_renegociado.logical_type: input=None output='StringType()'
+
+| # | coluna | entrada: físico / converted / logical / repetition | saída: físico / converted / logical / repetition | tipo | anotação/nullability |
+|---|---|---|---|---|---|
+| 1 | `data_referencia` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 2 | `chave_sequencial` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |
+| 3 | `co_cpf_cnpj` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 4 | `contrato` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |
+| 5 | `qt_dias_atraso` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 6 | `saldo` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |
+| 7 | `saldo_limite` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |
+| 8 | `ctr_elegivel` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 9 | `carteira` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 10 | `cod_produto` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 11 | `flag_prejuizo_2682` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 12 | `flag_obito` | INT32 / INT_32 / None / REQUIRED | INT32 / None / None / OPTIONAL | igual | difere |
+| 13 | `qt_dias_atraso_acumulado` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 14 | `modalidade` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 15 | `vr_renegociado` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 16 | `rating_contrato` | (não existe na entrada) | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | — | — |
+| 17 | `rating_final` | (não existe na entrada) | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | — | — |
+
+  metadata: 43 row groups (max 715,711 rows), compression=SNAPPY, 910.5 MB compressed / 1,444.4 MB raw; file size 0.911 GB
+  [PASS] compression is snappy — SNAPPY
+  [PASS] count == manifest.rows — 30,076,105 vs 30,076,105
+  [PASS] chave_sequencial unique and covering 1..N — min=1 max=30076105 distinct=30,076,105
+  [PASS] contrato unique — distinct=30,076,105
+  [PASS] sum(saldo) == manifest — 140014373887.45 vs 140014373887.45
+  [PASS] sum(saldo_limite) == manifest — 43255948972.24 vs 43255948972.24
+  [PASS] vr_renegociado null count == input — 28,571,205 vs 28,571,205
+  [PASS] nulls only in vr_renegociado — ok
+  [PASS] row-by-row: 15 columns identical to input (keyed hash EXCEPT both ways) — missing=0 extra=0 (2.2s)
+  [PASS] rating_final constant per co_cpf_cnpj — violations=0
+  [PASS] rating_final == worst rating_contrato of the customer — violations=0
+  [PASS] rows with rating_final != rating_contrato (arrasto effect) — 5,311,074 rows (17.66%) in 2,310,901 customers (19.20% — expected ≈19.2%, the share of customers with min rank != max rank in 02)
+  rating_final distribution: {'A': 18780410, 'B': 25190, 'C': 72430, 'D': 85983, 'E': 422535, 'F': 250032, 'G': 260940, 'H': 10178585}
+  [PASS] pyarrow reads the whole file — 30,076,105 rows in 0.4s; schema: ['data_referencia: string', 'chave_sequencial: int64', 'co_cpf_cnpj: string', 'contrato: int64', 'qt_dias_atraso: int32', 'saldo: double', 'saldo_limite: double', 'ctr_elegivel: string', 'carteira: string', 'cod_produto: int32', 'flag_prejuizo_2682: int32', 'flag_obito: int32', 'qt_dias_atraso_acumulado: int32', 'modalidade: int32', 'vr_renegociado: string', 'rating_contrato: string', 'rating_final: string']
+
+0 failure(s) in 19 checks (35.1s)
+report -> results/validate_output_03b_20261125T162007Z.json
+[03_export_03b run 2/3] validation: 35.5s
+[03_export_03b run 2/3] saved results/03_export_03b_run2_20261125T162817Z.json (+ summary.csv)
+[03_export_03b run 3/3] ratings_poc.clientes_agrupados -> s3://btg-ratings-poc-dgoncalves/output/03b/20261125T162817Z/
+  $out: {"s3": {"bucket": "btg-ratings-poc-dgoncalves", "region": "us-east-1", "filename": "output/03b/20261125T162817Z/ratings_export", "format": {"name": "parquet", "columnCompression": "snappy", "maxFileSize": "20GiB"}, "errorMode": "stop"}}
+  background aggregate accepted in 0.33s; polling $queryHistory every 2.0s
+       62s  history=not yet visible  s3: 0 obj, 0.0 MB
+      123s  history=not yet visible  s3: 0 obj, 0.0 MB
+      185s  history=not yet visible  s3: 0 obj, 0.0 MB
+      247s  history=not yet visible  s3: 0 obj, 0.0 MB
+      308s  history=not yet visible  s3: 0 obj, 0.0 MB
+      370s  history=not yet visible  s3: 0 obj, 0.0 MB
+[03_export_03b run 3/3] main: 411.6s (source: queryHistory; 2026-11-25T16:28:17 -> 2026-11-25T16:35:09)
+  S3: 1 file(s), 868.4 MB
+    output/03b/20261125T162817Z/ratings_export.1.parquet  868.4 MB
+[03_export_03b run 3/3] validation ...
+  $ /Users/daniel.goncalves/MongoDB/git/mdb-parquet/scripts/validate_output.py --s3-prefix s3://btg-ratings-poc-dgoncalves/output/03b/20261125T162817Z/ --manifest data/manifest.json --input data/ratings_input_synthetic.parquet --report /Users/daniel.goncalves/MongoDB/git/mdb-parquet/results/validate_output_03b_20261125T162817Z.json --grouped
+  downloading output/03b/20261125T162817Z/ratings_export.1.parquet (910.6 MB) ...
+  1 object(s) under s3://btg-ratings-poc-dgoncalves/output/03b/20261125T162817Z/ -> data/output/03b/20261125T162817Z (26.9s)
+  [PASS] no error/other files in the prefix — 1 parquet file(s)
+  [PASS] exactly 1 parquet file generated — 1 file(s)
+  [PASS] column names and order — data_referencia, chave_sequencial, co_cpf_cnpj, contrato, qt_dias_atraso, saldo, saldo_limite, ctr_elegivel, carteira, cod_produto, flag_prejuizo_2682, flag_obito, qt_dias_atraso_acumulado, modalidade, vr_renegociado, rating_contrato, rating_final
+  [PASS] no nested/polymorphic (group) columns — all leaves
+  [PASS] first 15 columns: same physical/logical type as input (normalized) — identical
+  [WARN] first 15 columns: identical annotations and nullability (repetition) — 17 difference(s): col 1 data_referencia.logical_type: input=None output='StringType()'; col 1 data_referencia.repetition_type: input='REQUIRED' output='OPTIONAL'; col 2 chave_sequencial.converted_type: input='INT_64' output=None; col 3 co_cpf_cnpj.logical_type: input=None output='StringType()'; col 3 co_cpf_cnpj.repetition_type: input='REQUIRED' output='OPTIONAL'; col 4 contrato.converted_type: input='INT_64' output=None; col 5 qt_dias_atraso.converted_type: input='INT_32' output=None; col 8 ctr_elegivel.logical_type: input=None output='StringType()'; col 8 ctr_elegivel.repetition_type: input='REQUIRED' output='OPTIONAL'; col 9 carteira.logical_type: input=None output='StringType()'; col 10 cod_produto.converted_type: input='INT_32' output=None; col 11 flag_prejuizo_2682.converted_type: input='INT_32' output=None; col 12 flag_obito.converted_type: input='INT_32' output=None; col 12 flag_obito.repetition_type: input='REQUIRED' output='OPTIONAL'; col 13 qt_dias_atraso_acumulado.converted_type: input='INT_32' output=None; col 14 modalidade.converted_type: input='INT_32' output=None; col 15 vr_renegociado.logical_type: input=None output='StringType()'
+
+| # | coluna | entrada: físico / converted / logical / repetition | saída: físico / converted / logical / repetition | tipo | anotação/nullability |
+|---|---|---|---|---|---|
+| 1 | `data_referencia` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 2 | `chave_sequencial` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |
+| 3 | `co_cpf_cnpj` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 4 | `contrato` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |
+| 5 | `qt_dias_atraso` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 6 | `saldo` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |
+| 7 | `saldo_limite` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |
+| 8 | `ctr_elegivel` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 9 | `carteira` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 10 | `cod_produto` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 11 | `flag_prejuizo_2682` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 12 | `flag_obito` | INT32 / INT_32 / None / REQUIRED | INT32 / None / None / OPTIONAL | igual | difere |
+| 13 | `qt_dias_atraso_acumulado` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 14 | `modalidade` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |
+| 15 | `vr_renegociado` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |
+| 16 | `rating_contrato` | (não existe na entrada) | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | — | — |
+| 17 | `rating_final` | (não existe na entrada) | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | — | — |
+
+  metadata: 43 row groups (max 715,711 rows), compression=SNAPPY, 910.5 MB compressed / 1,444.4 MB raw; file size 0.911 GB
+  [PASS] compression is snappy — SNAPPY
+  [PASS] count == manifest.rows — 30,076,105 vs 30,076,105
+  [PASS] chave_sequencial unique and covering 1..N — min=1 max=30076105 distinct=30,076,105
+  [PASS] contrato unique — distinct=30,076,105
+  [PASS] sum(saldo) == manifest — 140014373887.45 vs 140014373887.45
+  [PASS] sum(saldo_limite) == manifest — 43255948972.24 vs 43255948972.24
+  [PASS] vr_renegociado null count == input — 28,571,205 vs 28,571,205
+  [PASS] nulls only in vr_renegociado — ok
+  [PASS] row-by-row: 15 columns identical to input (keyed hash EXCEPT both ways) — missing=0 extra=0 (2.2s)
+  [PASS] rating_final constant per co_cpf_cnpj — violations=0
+  [PASS] rating_final == worst rating_contrato of the customer — violations=0
+  [PASS] rows with rating_final != rating_contrato (arrasto effect) — 5,311,074 rows (17.66%) in 2,310,901 customers (19.20% — expected ≈19.2%, the share of customers with min rank != max rank in 02)
+  rating_final distribution: {'A': 18780410, 'B': 25190, 'C': 72430, 'D': 85983, 'E': 422535, 'F': 250032, 'G': 260940, 'H': 10178585}
+  [PASS] pyarrow reads the whole file — 30,076,105 rows in 0.4s; schema: ['data_referencia: string', 'chave_sequencial: int64', 'co_cpf_cnpj: string', 'contrato: int64', 'qt_dias_atraso: int32', 'saldo: double', 'saldo_limite: double', 'ctr_elegivel: string', 'carteira: string', 'cod_produto: int32', 'flag_prejuizo_2682: int32', 'flag_obito: int32', 'qt_dias_atraso_acumulado: int32', 'modalidade: int32', 'vr_renegociado: string', 'rating_contrato: string', 'rating_final: string']
+
+0 failure(s) in 19 checks (32.0s)
+report -> results/validate_output_03b_20261125T162817Z.json
+[03_export_03b run 3/3] validation: 32.5s
+[03_export_03b run 3/3] saved results/03_export_03b_run3_20261125T163543Z.json (+ summary.csv)

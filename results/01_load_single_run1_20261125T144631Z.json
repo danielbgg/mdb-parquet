@@ -4,20 +4,21 @@
   "runs": 1,
   "started_at": "2026-11-25T14:36:51+00:00",
   "finished_at": "2026-11-25T14:46:31+00:00",
-  "seconds": 374.9,
+  "seconds": 369.205,
   "timings": {
-    "main": 374.9,
-    "main_is_estimate": true,
+    "main": 369.205,
     "main_poll_interval_s": 10,
     "index_build": 68.162,
     "validation": 60.16,
-    "type_mapping": 3.364
+    "type_mapping": 3.364,
+    "main_polling_estimate": 374.9,
+    "main_source": "queryHistory"
   },
   "ok": true,
   "docs": 30076105,
   "source": "dbimport.s3import",
   "target": "ratings_poc.contratos_flat",
-  "notes": "tempo por polling da coleção destino (±10s; sem resposta do servidor)",
+  "notes": "tempo exato do $queryHistory do ADF (reconciliado; estimativa original por polling: 374.9s)",
   "environment": {
     "tier": "M40",
     "cloud_region": "us-east-1",
@@ -408,6 +409,19 @@
       },
       "avg_obj_size_bytes": 334,
       "nindexes": 2
+    },
+    "query_history": {
+      "_id": "6b06f28633bb70be8b2494ed",
+      "appName": "ratings-poc",
+      "user": "admin.dbgg",
+      "db": "dbimport",
+      "collection": "s3import",
+      "opid": "18eb50862c7a5c3457f7f33d",
+      "startTime": "2026-11-25T14:36:53.977000",
+      "background": false,
+      "endTime": "2026-11-25T14:43:03.182000",
+      "error": "",
+      "ok": 1
     }
   }
 }

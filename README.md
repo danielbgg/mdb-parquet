@@ -11,7 +11,7 @@ Etapas:
 | `00_setup/` | documentação e templates da infra (Federated DB, IAM role, storage config) | pronto |
 | `01_load/` | carga plana S3 → Atlas via Data Federation `$out` + relatório de tipos | pronto |
 | `02_group_arrasto/` | modelo agrupado por cliente + arrasto simulado (02a no cluster, 02b direto do S3) | pronto |
-| `03_export/` | exportação de 30M linhas para 1 arquivo Parquet | próximo prompt |
+| `03_export/` | exportação de 30 M linhas para **1 arquivo Parquet** via Data Federation `$out` (03a plano, 03b agrupado) + 03c PyMongoArrow para EC2 | pronto |
 
 ## Estrutura
 
@@ -43,7 +43,13 @@ sql/
   group_cluster.py        # 02a: contratos_flat -> clientes_agrupados (no cluster)
   group_adf.py            # 02b: S3 -> clientes_agrupados_adf (no ADF, etapas 1+2 juntas)
   validate_grouped.py     # validação do modelo agrupado + documento de exemplo
-03_export/                # placeholder
+03_export/
+  export_common.py        # layout de saída (15 + 2 colunas), $replaceWith tipado, $out S3, background + $queryHistory
+  export_adf.py           # 03a / 03b / 03b-multi / ensaio via Data Federation
+  export_pymongoarrow.py  # 03c: PyMongoArrow + pyarrow.ParquetWriter (rodar numa EC2 us-east-1)
+scripts/
+  validate_output.py      # validação do Parquet exportado (DuckDB + pyarrow, diff de schema, linha a linha)
+  reconcile_query_history.py  # substitui tempos estimados (polling) pelos exatos do $queryHistory
 results/                  # perfil_sintetico.txt, calibracao.txt, type_mapping.md, summary.csv, summary.md, *.json
 data/                     # arquivos gerados (ignorado pelo git)
 ```
@@ -84,24 +90,36 @@ python 01_load/load_flat.py --source split  --drop-target                  # 01 
 python 02_group_arrasto/group_cluster.py --drop-target                     # 02a (--runs 3 para mediana)
 python 02_group_arrasto/group_adf.py --drop-target                         # 02b
 python scripts/make_summary.py                                              # results/summary.md
+
+# etapa 03 — export (AWS_PROFILE só para o validador baixar o arquivo)
+export AWS_PROFILE=<profile>
+python 03_export/export_adf.py --scenario ensaio                             # 1M
+python 03_export/export_adf.py --scenario 03a --runs 3                       # plano, 15 colunas
+python 03_export/export_adf.py --scenario 03b --runs 3                       # agrupado + arrasto, 17 colunas (principal)
+python 03_export/export_adf.py --scenario 03b-multi                          # maxFileSize padrão -> N arquivos
+python scripts/reconcile_query_history.py                                    # tempos exatos para execuções antigas
+python scripts/make_summary.py
 ```
 
-Detalhes em [01_load/README.md](01_load/README.md) e [02_group_arrasto/README.md](02_group_arrasto/README.md).
+Detalhes em [01_load/README.md](01_load/README.md), [02_group_arrasto/README.md](02_group_arrasto/README.md) e
+[03_export/README.md](03_export/README.md).
 Resultados: `results/summary.md` (tabela final + observações), `results/type_mapping.md` (tipos BSON por coluna),
 `results/exemplo_cliente_misto_clientes_agrupados.json`, `results/explain_02a_*.json`.
 
-### Resultados (Atlas M40 us-east-1, MongoDB 9.0.7, 1 execução cada)
+### Resultados (Atlas M40 us-east-1, MongoDB 9.0.7)
 
-| Cenário | Tempo | Validação |
+| Etapa | MongoDB Atlas | Cliente hoje (PostgreSQL) |
 |---|---|---|
-| 01 carga plana, 1 arquivo (ADF `$out`) | **~375 s** (+ 68 s índice `co_cpf_cnpj`) | 4/4 |
-| 01 carga plana, N arquivos | **~375 s** (igual: gargalo é a escrita no cluster) | 3/3 |
-| 02a agrupamento + arrasto no cluster | **330 s** | 12/12 |
-| 02b carga agrupada direto do S3 (ADF) | **~902 s** | 12/12 |
-| 01 + 02a | **~706 s ≈ 11,8 min** (vs ~100 min no Postgres atual) | |
+| 1. Carga Parquet S3 → Atlas (ADF `$out`) | **6,2 min** (369 s, exato) + 68 s de índice `co_cpf_cnpj` | ~50–60 min |
+| 2. Agrupamento por cliente + arrasto (02a) | **5,5 min** (331 s) | ~50 min |
+| 3. Export 30.076.105 linhas → **1 Parquet** (03b) | **7,6 min** (mediana de 3: 454 / 453 / 412 s), 868 MB, 43 row groups | ~40 min, ~200 arquivos |
+| **Total** | **≈ 19 min** | **≈ 2h40–3h** |
 
-Coleções: `contratos_flat` 30.076.105 docs, 2,2 GB storage; `clientes_agrupados` 12.034.569 docs, 2,1 GB, maior doc
-8,7 KB. Ver `results/summary.md` para as ressalvas de medição (tempos do ADF medidos por polling, ±10 s).
+Outros cenários: 01 com 8 arquivos = 367 s (igual ao arquivo único); 02b (1+2 numa só operação via ADF) = 15 min;
+03a plano (15 colunas) = 6,4 min; 03b-multi (`maxFileSize` padrão) = 6,2 min gerando **54 arquivos**.
+Validação do export (3×): contagem, chaves, checksums, schema, **igualdade linha a linha com a entrada (0 diferenças)**,
+`rating_final` consistente, leitura com pyarrow. Tempos das etapas via Data Federation vêm do `$queryHistory` (exatos).
+Tabela completa, diff de schema e ressalvas em [results/summary.md](results/summary.md).
 
 ## Gerador — comandos
 

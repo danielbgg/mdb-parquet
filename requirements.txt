@@ -2,3 +2,5 @@ duckdb>=1.1
 pyarrow>=17
 boto3>=1.34
 pymongo>=4.8
+pymongoarrow>=1.5
+backports.zstd; python_version < "3.14"

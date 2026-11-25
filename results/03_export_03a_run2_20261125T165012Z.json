@@ -1,0 +1,643 @@
+{
+  "scenario": "03_export_03a",
+  "run": 2,
+  "runs": 3,
+  "started_at": "2026-11-25T16:43:27+00:00",
+  "finished_at": "2026-11-25T16:50:12+00:00",
+  "seconds": 363.061,
+  "timings": {
+    "main": 363.061,
+    "main_source": "queryHistory",
+    "validation": 41.517
+  },
+  "ok": true,
+  "docs": 30076105,
+  "source": "ratings_poc.contratos_flat",
+  "target": "s3://btg-ratings-poc-dgoncalves/output/03a/20261125T164327Z/",
+  "notes": "",
+  "environment": {
+    "tier": "M40",
+    "cloud_region": "us-east-1",
+    "cluster_name": "MyBTG",
+    "mongo_version": "9.0.7",
+    "adf_version": "8.0.32",
+    "mongodb_uri": "mongodb+srv://dbgg:***@mybtg.beduh.mongodb.net/?retryWrites=true&w=majority",
+    "adf_uri": "mongodb://dbgg:***@btg-ratings-fdi-beduh.a.query.mongodb.net/?ssl=true&authSource=admin",
+    "client_host": "M-HV69RYTCW0",
+    "client_platform": "macOS-27.2.1-arm64-arm-64bit",
+    "manifest": {
+      "path": "data/manifest.json",
+      "seed": 42,
+      "type_profile": "mixed",
+      "rows": 30076105,
+      "customers": 12034569
+    }
+  },
+  "details": {
+    "pipeline": [
+      {
+        "$replaceWith": {
+          "data_referencia": {
+            "$toString": "$data_referencia"
+          },
+          "chave_sequencial": {
+            "$toLong": "$chave_sequencial"
+          },
+          "co_cpf_cnpj": {
+            "$toString": "$co_cpf_cnpj"
+          },
+          "contrato": {
+            "$toLong": "$contrato"
+          },
+          "qt_dias_atraso": {
+            "$toInt": "$qt_dias_atraso"
+          },
+          "saldo": {
+            "$toDouble": "$saldo"
+          },
+          "saldo_limite": {
+            "$toDouble": "$saldo_limite"
+          },
+          "ctr_elegivel": {
+            "$toString": "$ctr_elegivel"
+          },
+          "carteira": {
+            "$toString": "$carteira"
+          },
+          "cod_produto": {
+            "$toInt": "$cod_produto"
+          },
+          "flag_prejuizo_2682": {
+            "$toInt": "$flag_prejuizo_2682"
+          },
+          "flag_obito": {
+            "$toInt": "$flag_obito"
+          },
+          "qt_dias_atraso_acumulado": {
+            "$toInt": "$qt_dias_atraso_acumulado"
+          },
+          "modalidade": {
+            "$toInt": "$modalidade"
+          },
+          "vr_renegociado": {
+            "$ifNull": [
+              {
+                "$toString": "$vr_renegociado"
+              },
+              null
+            ]
+          }
+        }
+      },
+      {
+        "$out": {
+          "s3": {
+            "bucket": "btg-ratings-poc-dgoncalves",
+            "region": "us-east-1",
+            "filename": "output/03a/20261125T164327Z/ratings_export",
+            "format": {
+              "name": "parquet",
+              "columnCompression": "snappy",
+              "maxFileSize": "20GiB"
+            },
+            "errorMode": "stop"
+          }
+        }
+      }
+    ],
+    "s3_prefix": "output/03a/20261125T164327Z/",
+    "query_history": {
+      "_id": "6b07102ffdd3c26eb01f1edf",
+      "appName": "ratings-poc",
+      "user": "admin.dbgg",
+      "db": "ratings_poc",
+      "collection": "contratos_flat",
+      "opid": "18eb576e2cb71305f14efce1",
+      "startTime": "2026-11-25 16:43:27.483000",
+      "background": true,
+      "endTime": "2026-11-25 16:49:30.544000",
+      "error": "",
+      "ok": 1
+    },
+    "files": [
+      {
+        "key": "output/03a/20261125T164327Z/ratings_export.1.parquet",
+        "size_bytes": 1113473024
+      }
+    ],
+    "validation": {
+      "files": [
+        {
+          "key": "output/03a/20261125T164327Z/ratings_export.1.parquet",
+          "size_bytes": 1113473024
+        }
+      ],
+      "rows_expected": 30076105,
+      "size_bytes": 1113473024,
+      "schema_input": [
+        {
+          "name": "duckdb_schema",
+          "type": null,
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "REQUIRED",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": 15
+        },
+        {
+          "name": "data_referencia",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": null,
+          "repetition_type": "REQUIRED",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "chave_sequencial",
+          "type": "INT64",
+          "converted_type": "INT_64",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "co_cpf_cnpj",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": null,
+          "repetition_type": "REQUIRED",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "contrato",
+          "type": "INT64",
+          "converted_type": "INT_64",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "qt_dias_atraso",
+          "type": "INT32",
+          "converted_type": "INT_32",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "saldo",
+          "type": "DOUBLE",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "saldo_limite",
+          "type": "DOUBLE",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "ctr_elegivel",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": null,
+          "repetition_type": "REQUIRED",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "carteira",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "cod_produto",
+          "type": "INT32",
+          "converted_type": "INT_32",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "flag_prejuizo_2682",
+          "type": "INT32",
+          "converted_type": "INT_32",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "flag_obito",
+          "type": "INT32",
+          "converted_type": "INT_32",
+          "logical_type": null,
+          "repetition_type": "REQUIRED",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "qt_dias_atraso_acumulado",
+          "type": "INT32",
+          "converted_type": "INT_32",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "modalidade",
+          "type": "INT32",
+          "converted_type": "INT_32",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "vr_renegociado",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        }
+      ],
+      "schema_output": [
+        {
+          "name": "root",
+          "type": null,
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "REQUIRED",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": 15
+        },
+        {
+          "name": "data_referencia",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": "StringType()",
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "chave_sequencial",
+          "type": "INT64",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "co_cpf_cnpj",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": "StringType()",
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "contrato",
+          "type": "INT64",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "qt_dias_atraso",
+          "type": "INT32",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "saldo",
+          "type": "DOUBLE",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "saldo_limite",
+          "type": "DOUBLE",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "ctr_elegivel",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": "StringType()",
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "carteira",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": "StringType()",
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "cod_produto",
+          "type": "INT32",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "flag_prejuizo_2682",
+          "type": "INT32",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "flag_obito",
+          "type": "INT32",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "qt_dias_atraso_acumulado",
+          "type": "INT32",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "modalidade",
+          "type": "INT32",
+          "converted_type": null,
+          "logical_type": null,
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        },
+        {
+          "name": "vr_renegociado",
+          "type": "BYTE_ARRAY",
+          "converted_type": "UTF8",
+          "logical_type": "StringType()",
+          "repetition_type": "OPTIONAL",
+          "scale": null,
+          "precision": null,
+          "field_id": null,
+          "num_children": null
+        }
+      ],
+      "schema_type_diff": [],
+      "schema_annotation_diff": [
+        "col 1 data_referencia.logical_type: input=None output='StringType()'",
+        "col 1 data_referencia.repetition_type: input='REQUIRED' output='OPTIONAL'",
+        "col 2 chave_sequencial.converted_type: input='INT_64' output=None",
+        "col 3 co_cpf_cnpj.logical_type: input=None output='StringType()'",
+        "col 3 co_cpf_cnpj.repetition_type: input='REQUIRED' output='OPTIONAL'",
+        "col 4 contrato.converted_type: input='INT_64' output=None",
+        "col 5 qt_dias_atraso.converted_type: input='INT_32' output=None",
+        "col 8 ctr_elegivel.logical_type: input=None output='StringType()'",
+        "col 8 ctr_elegivel.repetition_type: input='REQUIRED' output='OPTIONAL'",
+        "col 9 carteira.logical_type: input=None output='StringType()'",
+        "col 10 cod_produto.converted_type: input='INT_32' output=None",
+        "col 11 flag_prejuizo_2682.converted_type: input='INT_32' output=None",
+        "col 12 flag_obito.converted_type: input='INT_32' output=None",
+        "col 12 flag_obito.repetition_type: input='REQUIRED' output='OPTIONAL'",
+        "col 13 qt_dias_atraso_acumulado.converted_type: input='INT_32' output=None",
+        "col 14 modalidade.converted_type: input='INT_32' output=None",
+        "col 15 vr_renegociado.logical_type: input=None output='StringType()'"
+      ],
+      "schema_table_md": "| # | coluna | entrada: físico / converted / logical / repetition | saída: físico / converted / logical / repetition | tipo | anotação/nullability |\n|---|---|---|---|---|---|\n| 1 | `data_referencia` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |\n| 2 | `chave_sequencial` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |\n| 3 | `co_cpf_cnpj` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |\n| 4 | `contrato` | INT64 / INT_64 / None / OPTIONAL | INT64 / None / None / OPTIONAL | igual | difere |\n| 5 | `qt_dias_atraso` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |\n| 6 | `saldo` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |\n| 7 | `saldo_limite` | DOUBLE / None / None / OPTIONAL | DOUBLE / None / None / OPTIONAL | igual | igual |\n| 8 | `ctr_elegivel` | BYTE_ARRAY / UTF8 / None / REQUIRED | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |\n| 9 | `carteira` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |\n| 10 | `cod_produto` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |\n| 11 | `flag_prejuizo_2682` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |\n| 12 | `flag_obito` | INT32 / INT_32 / None / REQUIRED | INT32 / None / None / OPTIONAL | igual | difere |\n| 13 | `qt_dias_atraso_acumulado` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |\n| 14 | `modalidade` | INT32 / INT_32 / None / OPTIONAL | INT32 / None / None / OPTIONAL | igual | difere |\n| 15 | `vr_renegociado` | BYTE_ARRAY / UTF8 / None / OPTIONAL | BYTE_ARRAY / UTF8 / StringType() / OPTIONAL | igual | difere |",
+      "row_groups": 39,
+      "max_rows_per_row_group": 790608,
+      "compression": "SNAPPY",
+      "rows": 30076105,
+      "distinct_contrato": 30076105,
+      "vr_renegociado_nulls": 28571205,
+      "sum_saldo": "140014373887.45",
+      "sum_saldo_limite": "43255948972.24",
+      "rows_missing_vs_input": 0,
+      "rows_extra_vs_input": 0,
+      "pyarrow_schema": [
+        "data_referencia: string",
+        "chave_sequencial: int64",
+        "co_cpf_cnpj: string",
+        "contrato: int64",
+        "qt_dias_atraso: int32",
+        "saldo: double",
+        "saldo_limite: double",
+        "ctr_elegivel: string",
+        "carteira: string",
+        "cod_produto: int32",
+        "flag_prejuizo_2682: int32",
+        "flag_obito: int32",
+        "qt_dias_atraso_acumulado: int32",
+        "modalidade: int32",
+        "vr_renegociado: string"
+      ],
+      "checks": [
+        {
+          "ok": true,
+          "check": "no error/other files in the prefix",
+          "detail": "1 parquet file(s)",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "exactly 1 parquet file generated",
+          "detail": "1 file(s)",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "column names and order",
+          "detail": "data_referencia, chave_sequencial, co_cpf_cnpj, contrato, qt_dias_atraso, saldo, saldo_limite, ctr_elegivel, carteira, cod_produto, flag_prejuizo_2682, flag_obito, qt_dias_atraso_acumulado, modalidade, vr_renegociado",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "no nested/polymorphic (group) columns",
+          "detail": "all leaves",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "first 15 columns: same physical/logical type as input (normalized)",
+          "detail": "identical",
+          "warn_only": false
+        },
+        {
+          "ok": false,
+          "check": "first 15 columns: identical annotations and nullability (repetition)",
+          "detail": "17 difference(s): col 1 data_referencia.logical_type: input=None output='StringType()'; col 1 data_referencia.repetition_type: input='REQUIRED' output='OPTIONAL'; col 2 chave_sequencial.converted_type: input='INT_64' output=None; col 3 co_cpf_cnpj.logical_type: input=None output='StringType()'; col 3 co_cpf_cnpj.repetition_type: input='REQUIRED' output='OPTIONAL'; col 4 contrato.converted_type: input='INT_64' output=None; col 5 qt_dias_atraso.converted_type: input='INT_32' output=None; col 8 ctr_elegivel.logical_type: input=None output='StringType()'; col 8 ctr_elegivel.repetition_type: input='REQUIRED' output='OPTIONAL'; col 9 carteira.logical_type: input=None output='StringType()'; col 10 cod_produto.converted_type: input='INT_32' output=None; col 11 flag_prejuizo_2682.converted_type: input='INT_32' output=None; col 12 flag_obito.converted_type: input='INT_32' output=None; col 12 flag_obito.repetition_type: input='REQUIRED' output='OPTIONAL'; col 13 qt_dias_atraso_acumulado.converted_type: input='INT_32' output=None; col 14 modalidade.converted_type: input='INT_32' output=None; col 15 vr_renegociado.logical_type: input=None output='StringType()'",
+          "warn_only": true
+        },
+        {
+          "ok": true,
+          "check": "compression is snappy",
+          "detail": "SNAPPY",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "count == manifest.rows",
+          "detail": "30,076,105 vs 30,076,105",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "chave_sequencial unique and covering 1..N",
+          "detail": "min=1 max=30076105 distinct=30,076,105",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "contrato unique",
+          "detail": "distinct=30,076,105",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "sum(saldo) == manifest",
+          "detail": "140014373887.45 vs 140014373887.45",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "sum(saldo_limite) == manifest",
+          "detail": "43255948972.24 vs 43255948972.24",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "vr_renegociado null count == input",
+          "detail": "28,571,205 vs 28,571,205",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "nulls only in vr_renegociado",
+          "detail": "ok",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "row-by-row: 15 columns identical to input (keyed hash EXCEPT both ways)",
+          "detail": "missing=0 extra=0 (2.1s)",
+          "warn_only": false
+        },
+        {
+          "ok": true,
+          "check": "pyarrow reads the whole file",
+          "detail": "30,076,105 rows in 0.6s; schema: ['data_referencia: string', 'chave_sequencial: int64', 'co_cpf_cnpj: string', 'contrato: int64', 'qt_dias_atraso: int32', 'saldo: double', 'saldo_limite: double', 'ctr_elegivel: string', 'carteira: string', 'cod_produto: int32', 'flag_prejuizo_2682: int32', 'flag_obito: int32', 'qt_dias_atraso_acumulado: int32', 'modalidade: int32', 'vr_renegociado: string']",
+          "warn_only": false
+        }
+      ],
+      "ok": true,
+      "validation_seconds": 40.9
+    }
+  }
+}
