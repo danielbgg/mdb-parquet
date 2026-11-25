@@ -1,0 +1,13 @@
+  dropped ratings_poc.contratos_flat
+  pipeline: [{"$out": {"atlas": {"clusterName": "MyBTG", "db": "ratings_poc", "coll": "contratos_flat", "projectId": "652072ce18b43c16e36add5e"}}}]
+[01_load_single run 1/1] main ...
+       10s  target docs: 0/30,076,105
+       71s  target docs: 0/30,076,105
+      132s  target docs: 0/30,076,105
+      192s  target docs: 0/30,076,105
+      253s  target docs: 0/30,076,105
+      314s  target docs: 0/30,076,105
+      375s  target docs: 30,076,105/30,076,105
+      436s  target docs: 30,076,105/30,076,105
+[01_load_single run 1/1] main: ~374.8s (count reached 30,076,105; sem resposta do servidor)
+[01_load_single run 1/1] validation ...

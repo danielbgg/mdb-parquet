@@ -1,0 +1,56 @@
+{
+  "stores": [
+    {
+      "name": "s3store",
+      "provider": "s3",
+      "region": "${AWS_REGION}",
+      "bucket": "${S3_BUCKET}",
+      "delimiter": "/",
+      "prefix": ""
+    },
+    {
+      "name": "atlasstore",
+      "provider": "atlas",
+      "clusterName": "${ATLAS_CLUSTER}",
+      "projectId": "${ATLAS_PROJECT_ID}"
+    }
+  ],
+  "databases": [
+    {
+      "name": "dbimport",
+      "collections": [
+        {
+          "name": "s3import",
+          "dataSources": [
+            { "storeName": "s3store", "path": "/input/*.parquet", "defaultFormat": ".parquet" }
+          ]
+        },
+        {
+          "name": "s3import_split",
+          "dataSources": [
+            { "storeName": "s3store", "path": "/input_split/*.parquet", "defaultFormat": ".parquet" }
+          ]
+        },
+        {
+          "name": "s3import_1m",
+          "dataSources": [
+            { "storeName": "s3store", "path": "/input_1m/*.parquet", "defaultFormat": ".parquet" }
+          ]
+        }
+      ],
+      "views": []
+    },
+    {
+      "name": "${TARGET_DB}",
+      "collections": [
+        {
+          "name": "*",
+          "dataSources": [
+            { "storeName": "atlasstore", "database": "${TARGET_DB}", "collection": "*" }
+          ]
+        }
+      ],
+      "views": []
+    }
+  ]
+}

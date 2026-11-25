@@ -1,0 +1,16 @@
+{
+      “collections”: [
+        {
+          “name”: “simulated_35M”,
+          “dataSources”: [
+            {
+              “collection”: “simulated_35M”,
+              “database”: “production_db”,
+              “storeName”: “ClusterUS”
+            }
+          ]
+        }
+      ],
+      “name”: “parquet_db”,
+      “views”: []
+    }

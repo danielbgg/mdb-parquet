@@ -1,0 +1,41 @@
+{
+  "_id": "00000006332",
+  "data_referencia": "01/10/2026 00:00:00",
+  "qtd_contratos": 2,
+  "pior_rank": 5,
+  "rating_final": "E",
+  "contratos": [
+    {
+      "chave_sequencial": 2102511,
+      "contrato": 47201813819,
+      "qt_dias_atraso": 91,
+      "saldo": 146.48,
+      "saldo_limite": 0.0,
+      "ctr_elegivel": "N",
+      "carteira": "C3",
+      "cod_produto": 6101,
+      "flag_prejuizo_2682": 0,
+      "flag_obito": 0,
+      "qt_dias_atraso_acumulado": 91,
+      "modalidade": 601,
+      "vr_renegociado": null,
+      "rating_contrato": "E"
+    },
+    {
+      "chave_sequencial": 17050325,
+      "contrato": 5864961502,
+      "qt_dias_atraso": 0,
+      "saldo": 2156.66,
+      "saldo_limite": 0.0,
+      "ctr_elegivel": "N",
+      "carteira": "C5",
+      "cod_produto": 8305,
+      "flag_prejuizo_2682": 0,
+      "flag_obito": 0,
+      "qt_dias_atraso_acumulado": 0,
+      "modalidade": 204,
+      "vr_renegociado": null,
+      "rating_contrato": "A"
+    }
+  ]
+}

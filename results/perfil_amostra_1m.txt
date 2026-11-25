@@ -1,0 +1,98 @@
+# perfil_parquet.sql sobre data/sample_1m.parquet
+
+-- Uso: duckdb -c ".read perfil_parquet.sql"   (ajuste o caminho abaixo)
+-- Substitua ARQUIVO.parquet pelo caminho do arquivo real
+-- 1) Schema físico/lógico (tipos reais de cada coluna)
+name                      type        converted_type  logical_type  scale  precision
+------------------------  ----------  --------------  ------------  -----  ---------
+duckdb_schema                                                                       
+data_referencia           BYTE_ARRAY  UTF8                                          
+chave_sequencial          INT64       INT_64                                        
+co_cpf_cnpj               BYTE_ARRAY  UTF8                                          
+contrato                  INT64       INT_64                                        
+qt_dias_atraso            INT32       INT_32                                        
+saldo                     DOUBLE                                                    
+saldo_limite              DOUBLE                                                    
+ctr_elegivel              BYTE_ARRAY  UTF8                                          
+carteira                  BYTE_ARRAY  UTF8                                          
+cod_produto               INT32       INT_32                                        
+flag_prejuizo_2682        INT32       INT_32                                        
+flag_obito                INT32       INT_32                                        
+qt_dias_atraso_acumulado  INT32       INT_32                                        
+modalidade                INT32       INT_32                                        
+vr_renegociado            BYTE_ARRAY  UTF8                                          
+(16 rows)
+
+-- 2) Layout do arquivo: nº de row groups, linhas por row group, compressão
+row_groups  max_rows_por_rg  compressao  mb_comprimido
+----------  ---------------  ----------  -------------
+1           1000000          SNAPPY      34.18874     
+(1 rows)
+
+-- 3) Tamanho por coluna (quais colunas pesam mais)
+coluna                    mb  
+------------------------  ----
+co_cpf_cnpj               10.4
+contrato                  6.9 
+saldo                     5.5 
+chave_sequencial          4.9 
+saldo_limite              2.1 
+qt_dias_atraso_acumulado  1.0 
+qt_dias_atraso            0.9 
+cod_produto               0.8 
+modalidade                0.6 
+vr_renegociado            0.5 
+carteira                  0.4 
+flag_prejuizo_2682        0.1 
+ctr_elegivel              0.1 
+flag_obito                0.0 
+data_referencia           0.0 
+(15 rows)
+
+-- 4) Perfil estatístico agregado (sem valores individuais)
+column_name               column_type  min                  max                  approx_unique  avg                 std                 q25               q50                q75                count    null_percentage
+------------------------  -----------  -------------------  -------------------  -------------  ------------------  ------------------  ----------------  -----------------  -----------------  -------  ---------------
+data_referencia           VARCHAR      01/10/2026 00:00:00  01/10/2026 00:00:00  1                                                                                                              1000000  0.00           
+qt_dias_atraso            INTEGER      0                    3650                 3560           149.13486           443.5820188282867   0                 0                  27                 1000000  0.00           
+saldo                     DOUBLE       2.0                  726204.63            569464         4657.063653980045   9679.773667154215   834.215706843932  2001.319572182312  4814.297873227136  1000000  0.00           
+saldo_limite              DOUBLE       0.0                  151629.49            199830         1436.8524969199907  4089.1419602915767  0.0               0.0                0.0                1000000  0.00           
+ctr_elegivel              VARCHAR      N                    S                    2                                                                                                              1000000  0.00           
+carteira                  VARCHAR      C1                   C5                   5                                                                                                              1000000  0.00           
+cod_produto               INTEGER      1101                 9301                 39             4767.689312         2779.754914114892   2302              4201               8211               1000000  0.00           
+flag_prejuizo_2682        INTEGER      0                    1                    2              0.100898            0.3011937653964332  0                 0                  0                  1000000  0.00           
+flag_obito                INTEGER      0                    1                    2              0.003088            0.0554839376258328  0                 0                  0                  1000000  0.00           
+qt_dias_atraso_acumulado  INTEGER      0                    4015                 3782           167.408824          448.31776212832915  0                 0                  133                1000000  0.00           
+modalidade                INTEGER      101                  903                  31             311.126166          208.0179656366636   201               203                402                1000000  0.00           
+vr_renegociado            VARCHAR      100.27               9993.91              51559                                                                                                          1000000  94.99          
+(12 rows)
+
+-- 5) Cardinalidades das chaves (apenas contagens)
+linhas   clientes  contratos  chaves
+-------  --------  ---------  ------
+1000000  378607    999927     981650
+(1 rows)
+
+-- 6) Distribuição de contratos por cliente (define o modelo agrupado)
+contratos_por_cliente  clientes
+---------------------  --------
+1                      201217  
+2                      86440   
+3                      43330   
+4                      23959   
+5                      15778   
+6                      3975    
+7                      4044    
+8                      3921    
+9                      3951    
+10                     3918    
+11                     409     
+12                     420     
+13                     382     
+14                     405     
+15                     413     
+16                     400     
+17                     394     
+18                     406     
+19                     415     
+20+                    4322    
+(20 rows)

@@ -1,0 +1,233 @@
+{
+  "scenario": "01_load_1m",
+  "run": 1,
+  "runs": 1,
+  "started_at": "2026-11-25T14:04:51+00:00",
+  "finished_at": "2026-11-25T14:05:15+00:00",
+  "seconds": 16.501,
+  "timings": {
+    "main": 16.501,
+    "validation": 2.162,
+    "type_mapping": 2.884
+  },
+  "ok": true,
+  "docs": 1000000,
+  "source": "dbimport.s3import_1m",
+  "target": "ratings_poc.contratos_flat_1m",
+  "notes": "",
+  "environment": {
+    "tier": "M40",
+    "cloud_region": "us-east-1",
+    "cluster_name": "MyBTG",
+    "mongo_version": "9.0.7",
+    "adf_version": "8.0.32",
+    "mongodb_uri": "mongodb+srv://dbgg:***@mybtg.beduh.mongodb.net/?retryWrites=true&w=majority",
+    "adf_uri": "mongodb://dbgg:***@btg-ratings-fdi-beduh.a.query.mongodb.net/?ssl=true&authSource=admin",
+    "client_host": "M-HV69RYTCW0",
+    "client_platform": "macOS-27.2.1-arm64-arm-64bit",
+    "manifest": {
+      "path": "data/sample_1m.manifest.json",
+      "seed": 42,
+      "type_profile": "mixed",
+      "rows": 1000000,
+      "customers": 398499
+    }
+  },
+  "details": {
+    "pipeline": [
+      {
+        "$out": {
+          "atlas": {
+            "clusterName": "MyBTG",
+            "db": "ratings_poc",
+            "coll": "contratos_flat_1m",
+            "projectId": "652072ce18b43c16e36add5e"
+          }
+        }
+      }
+    ],
+    "progress": [
+      [
+        10.0,
+        0
+      ]
+    ],
+    "validation": {
+      "count": 1000000,
+      "sum_saldo": "4657063653.98000000000000",
+      "sum_saldo_limite": "1436852496.920000000000",
+      "distinct_customers": 398499,
+      "checks": [
+        {
+          "ok": true,
+          "check": "countDocuments == manifest.rows",
+          "detail": "1,000,000 vs 1,000,000"
+        },
+        {
+          "ok": true,
+          "check": "sum_saldo == manifest (±0.01)",
+          "detail": "4,657,063,653.98 vs 4,657,063,653.98"
+        },
+        {
+          "ok": true,
+          "check": "sum_saldo_limite == manifest (±0.01)",
+          "detail": "1,436,852,496.92 vs 1,436,852,496.92"
+        },
+        {
+          "ok": true,
+          "check": "distinct co_cpf_cnpj == manifest.customers",
+          "detail": "398,499 vs 398,499"
+        }
+      ],
+      "ok": true
+    },
+    "type_mapping": {
+      "sample_size": 100000,
+      "per_column": {
+        "data_referencia": {
+          "string": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "chave_sequencial": {
+          "long": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "co_cpf_cnpj": {
+          "string": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "contrato": {
+          "long": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "qt_dias_atraso": {
+          "int": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "saldo": {
+          "double": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "saldo_limite": {
+          "double": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "ctr_elegivel": {
+          "string": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "carteira": {
+          "string": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "cod_produto": {
+          "int": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "flag_prejuizo_2682": {
+          "int": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "flag_obito": {
+          "int": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "qt_dias_atraso_acumulado": {
+          "int": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "modalidade": {
+          "int": {
+            "count": 100000,
+            "pct": 100.0
+          }
+        },
+        "vr_renegociado": {
+          "missing": {
+            "count": 94900,
+            "pct": 94.9
+          },
+          "string": {
+            "count": 5100,
+            "pct": 5.1
+          }
+        }
+      },
+      "field_order": [
+        "_id",
+        "data_referencia",
+        "chave_sequencial",
+        "co_cpf_cnpj",
+        "contrato",
+        "qt_dias_atraso",
+        "saldo",
+        "saldo_limite",
+        "ctr_elegivel",
+        "carteira",
+        "cod_produto",
+        "flag_prejuizo_2682",
+        "flag_obito",
+        "qt_dias_atraso_acumulado",
+        "modalidade"
+      ],
+      "field_order_preserved": true,
+      "field_order_full_doc": [
+        "data_referencia",
+        "chave_sequencial",
+        "co_cpf_cnpj",
+        "contrato",
+        "qt_dias_atraso",
+        "saldo",
+        "saldo_limite",
+        "ctr_elegivel",
+        "carteira",
+        "cod_produto",
+        "flag_prejuizo_2682",
+        "flag_obito",
+        "qt_dias_atraso_acumulado",
+        "modalidade",
+        "vr_renegociado"
+      ],
+      "field_order_full_doc_preserved": true,
+      "vr_renegociado_empty_as": "missing (campo ausente)",
+      "id_type": "ObjectId"
+    },
+    "coll_stats": {
+      "count": 1000000,
+      "size_bytes": 334624928,
+      "storage_size_bytes": 68345856,
+      "total_index_size_bytes": 25092096,
+      "index_sizes": {
+        "_id_": 25092096
+      },
+      "avg_obj_size_bytes": 334,
+      "nindexes": 1
+    }
+  }
+}
