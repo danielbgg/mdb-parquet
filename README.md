@@ -26,8 +26,7 @@ via `$queryHistory`.
 - Exportação validada linha a linha contra a entrada: **0 linhas faltando, 0 sobrando**, em todas as execuções.
 - Os tempos da coluna de referência foram **informados** pela equipe do processo atual, não medidos nesta POC.
 
-Detalhes, outros cenários e ressalvas: [Resultados detalhados](#resultados-detalhados) e
-[results/summary.md](results/summary.md).
+Detalhes, outros cenários e ressalvas: [Resultados detalhados](#resultados-detalhados).
 
 ## Arquitetura
 
