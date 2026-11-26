@@ -1,8 +1,0 @@
-Generating 30,076,105 rows | profile=mixed decimal=False compression=snappy row_group_size=1,048,576 order=random seed=42
-  contracts/customer mean=2.500; mixed share of multi-contract customers=30.4%
-  customers: 12,034,569 (2.4s)
-  contracts written: 30,076,105 rows -> data/ratings_input_synthetic.parquet (8.9s)
-Done: 30,076,105 rows, 12,034,569 customers, 1.059 GB (35.221 bytes/row), 29 row groups, 11.35s
-Manifest: data/manifest.json
-       11.86 real        34.92 user        18.19 sys
-          4528193536  maximum resident set size
